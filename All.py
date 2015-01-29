@@ -1,6 +1,7 @@
 #coding:UTF-8
 
 import math
+import random
 
 class Player():
 
@@ -14,13 +15,13 @@ class Player():
 
     def showHand(self):
         rand = random.randrange(0, 2)
-        print("showHand() has a rand = " + rand)
+        #print("showHand() has a rand = " + str(rand))
         if rand == 0:
-            return STONE
+            return self.STONE
         elif rand == 1:
-            return SCISSORS
+            return self.SCISSORS
         else:
-            return PAPER
+            return self.PAPER
 
     def notifyResult(self, result):
         if result == True:
@@ -43,7 +44,7 @@ class Judge():
                 print(winner.getName() + " wins." + "\n")
                 winner.notifyResult(True)
             else:
-                print("no winner.")
+                print("no winner." + "\n")
 
         print("finished !!" + "\n")
 
@@ -55,7 +56,30 @@ class Judge():
             print("no winner")
 
     def judgeJanken(self, player1, player2):
-        return player1
+        player1hand = player1.showHand()
+        player2hand = player2.showHand()
+        print(self.printHand(player1hand) + " vs " + self.printHand(player2hand))
+        #if player1hand == Player.STONE and player2hand == Player.SCISSORS:
+        if (player1hand == Player.STONE and player2hand == Player.SCISSORS) or \
+           (player1hand == Player.SCISSORS and player2hand == Player.PAPER) or \
+           (player1hand == Player.PAPER and player2hand == Player.STONE):
+               winner = player1
+        elif (player2hand == Player.STONE and player1hand == Player.SCISSORS) or \
+             (player2hand == Player.SCISSORS and player1hand == Player.PAPER) or \
+             (player2hand == Player.PAPER and player1hand == Player.STONE):
+                 winner = player2
+        else:
+            winner = None
+        return winner
+
+    def printHand(self, hand):
+        if hand == Player.STONE:
+            return "STONE"
+        elif hand == Player.SCISSORS:
+            return "SCISSORS"
+        else:
+            return "PAPER"
+
 
     def judgeFinalWinner(self, player1, player2):
         if player1.getWinCount() > player2.getWinCount():
